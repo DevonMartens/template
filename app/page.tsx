@@ -32,9 +32,7 @@ export default function Home() {
     const fetchTokenData = async () => {
       if (address && isConnected) {
         try {
-          const selectedPair = addressAmountPairs.find(
-            (pair) => pair.user === address,
-          );
+          const selectedPair = addressAmountPairs.find((pair) => pair.address === address);
 
           if (selectedPair) {
             setTokensAvailable(selectedPair.amount);
@@ -81,10 +79,7 @@ export default function Home() {
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           {isConnected ? (
             showClaimModal ? (
-              <ClaimModal
-                setShowClaimModal={setShowClaimModal}
-                onClaim={handleClaim}
-              />
+              <ClaimModal setShowClaimModal={setShowClaimModal} onClaim={handleClaim} />
             ) : (
               <div className="flex flex-col items-center space-y-2">
                 {error ? (
@@ -108,7 +103,7 @@ export default function Home() {
                     `relative rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44 overflow-hidden`,
                     noTokens || alreadyClaimed
                       ? "text-neutral-700 cursor-not-allowed"
-                      : `cursor-pointer text-neutral-50 bg-black hover:bg-neutral-900`,
+                      : `cursor-pointer text-neutral-50 bg-black hover:bg-neutral-900`
                   )}
                   onClick={() => setShowClaimModal(true)}
                   disabled={noTokens || !!alreadyClaimed}
@@ -123,10 +118,7 @@ export default function Home() {
               </div>
             )
           ) : (
-            <w3m-connect-button
-              loadingLabel="Loading..."
-              label="Connect Wallet"
-            />
+            <w3m-connect-button loadingLabel="Loading..." label="Connect Wallet" />
           )}
         </div>
       </main>

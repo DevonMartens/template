@@ -23,9 +23,7 @@ const ClaimModal: React.FC<ModalProps> = ({ setShowClaimModal, onClaim }) => {
 
   useEffect(() => {
     if (address) {
-      const selectedPair = addressAmountPairs.find(
-        (pair) => pair.user === address,
-      );
+      const selectedPair = addressAmountPairs.find((pair) => pair.address === address);
 
       if (selectedPair) {
         setClaimAmount(selectedPair.amount);
@@ -100,11 +98,7 @@ const ClaimModal: React.FC<ModalProps> = ({ setShowClaimModal, onClaim }) => {
               )
             }
           />
-          <MainBtn
-            disabled={claiming}
-            onClick={handleCloseModal}
-            innerText="Back"
-          />
+          <MainBtn disabled={claiming} onClick={handleCloseModal} innerText="Back" />
         </div>
       </div>
     </div>

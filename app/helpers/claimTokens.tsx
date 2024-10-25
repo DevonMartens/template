@@ -14,29 +14,22 @@ export async function claimTokens(amount: BigNumberish): Promise<void> {
 
     const abiCoder = new ethers.AbiCoder();
 
-    const hashAddressAmountPair = (
-      user: string,
-      amount: BigNumberish,
-    ): string => {
+    const hashAddressAmountPair = (user: string, amount: BigNumberish): string => {
       const encoded = abiCoder.encode(["address", "uint256"], [user, amount]);
       return keccak256(encoded);
     };
-    const selectedPair = addressAmountPairs.find((pair) => pair.user === user);
+    const selectedPair = addressAmountPairs.find((pair) => pair.address === user);
     if (!selectedPair) {
       throw new Error(`User ${user} not found in AddressAmountPairs`);
     }
 
-    const contract = new Contract(
-      contractAddress as `0x${string}`,
-      MerkleAbi,
-      signer,
-    );
+    const contract = new Contract(contractAddress as `0x${string}`, MerkleAbi, signer);
 
     const merkleRoot = await contract.merkleRoot();
     console.log("merkleRoot (from contract):", merkleRoot);
 
     const leafNodes = addressAmountPairs.map((pair) =>
-      hashAddressAmountPair(pair.user, pair.amount),
+      hashAddressAmountPair(pair.address, pair.amount)
     );
     console.log("leafNodes", leafNodes);
 
@@ -56,20 +49,18 @@ export async function claimTokens(amount: BigNumberish): Promise<void> {
     const generatedRoot = "0x" + merkleTree.getRoot().toString("hex");
     console.log("generatedRoot (from frontend):", generatedRoot);
 
-    if (generatedRoot !== merkleRoot) {
-      throw new Error("Merkle root mismatch between contract and frontend.");
+    if (!proof.length) {
+      throw new Error("Proof generation failed. The user may not be part of the Merkle tree.");
     }
 
-    if (!proof.length) {
-      throw new Error(
-        "Proof generation failed. The user may not be part of the Merkle tree.",
-      );
-    }
+    console.log(`amount: ${amount}`);
+    console.log(`proof: ${proof}`);
+    console.log("0x1894488752dF7Ea0e765144C4d281414065eb67e");
 
     await writeContract(config, {
       address: contractAddress as `0x${string}`,
       abi: MerkleAbi,
-      functionName: "claimTokens",
+      functionName: "claimReform",
       args: [amount, proof],
     });
 

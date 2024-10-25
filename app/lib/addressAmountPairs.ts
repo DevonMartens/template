@@ -4,15 +4,11 @@
  */
 export const addressAmountPairs = [
   {
-    user: "0x934c2B33563604B7C6C6bac86A9f28D31dc33713",
-    amount: "500000000000000000000",
+    address: "0xC40D66965E7D709a5cE28a350428DdCfA1A0fD6a",
+    amount: "400000000000000000000",
   },
   {
-    user: "0x934c2B33563604B7C6C6bac86A9f28D31dc33713",
-    amount: "300000000000000000000",
-  },
-  {
-    user: "0x934c2B33563604B7C6C6bac86A9f28D31dc33713",
+    address: "0xe6d85348aF7173a51F743939407fe4a6BDC84037",
     amount: "400000000000000000000",
   },
 ];
